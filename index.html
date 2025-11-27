@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Поколено - Пачка за пачкой</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #111, #222);
+      font-family: Arial, sans-serif;
+      color: #fff;
+    }
+
+    .card {
+      width: 360px;
+      background: #181818;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+      transform: scale(1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .cover {
+      width: 100%;
+      height: 320px;
+      background: linear-gradient(135deg, #5f00ff, #d600ff);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .title {
+      margin-top: 15px;
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .artist {
+      opacity: 0.7;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 30px;
+      transition: 0.2s;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background: #444;
+    }
+
+    .progress {
+      width: 100%;
+      height: 6px;
+      background: #333;
+      border-radius: 3px;
+      margin-top: 18px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #b400ff;
+      transition: width 0.1s;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="cover">
+      <img src="pachka_za_pachkoi.jpg" alt="cover" />
+    </div>
+
+    <div class="title">Пачка за пачкой</div>
+    <div class="artist">Поколено</div>
+
+    <div class="progress" id="progress">
+      <div class="progress-bar" id="bar"></div>
+    </div>
+
+    <div class="controls">
+      <div class="btn" id="play">▶</div>
+    </div>
+
+    <audio id="audio" src="pachka_za_pachkoi.mp3"></audio>
+  </div>
+
+<script>
+  const audio = document.getElementById('audio')
+  const playBtn = document.getElementById('play')
+  const bar = document.getElementById('bar')
+  const progress = document.getElementById('progress')
+
+  playBtn.onclick = () => {
+    if (audio.paused) {
+      audio.play()
+      playBtn.textContent = '⏸'
+    } else {
+      audio.pause()
+      playBtn.textContent = '▶'
+    }
+  }
+
+  audio.ontimeupdate = () => {
+    const pct = (audio.currentTime / audio.duration) * 100
+    bar.style.width = pct + '%'
+  }
+
+  progress.onclick = e => {
+    const rect = progress.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const pct = x / rect.width
+    audio.currentTime = pct * audio.duration
+  }
+</script>
+
+</body>
+</html>
+
